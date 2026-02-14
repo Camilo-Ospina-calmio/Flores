@@ -134,8 +134,10 @@ body {
 
 .plans-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .plan-card {
@@ -408,7 +410,7 @@ footer {
 @media (max-width: 600px) {
   .hero h1 { font-size: 1.7rem; }
   .features { grid-template-columns: 1fr; gap: 0.8rem; padding: 1.5rem 1rem; }
-  .plans-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+  .plans-grid { grid-template-columns: 1fr; gap: 0.8rem; max-width: 100%; }
   .plans-section, .form-section { padding: 1.5rem 1rem; }
   .form-row { grid-template-columns: 1fr; gap: 0.8rem; }
   .plan-card { display: flex; align-items: center; gap: 1rem; text-align: left; padding: 1rem 1.2rem; }
@@ -449,23 +451,17 @@ footer {
 <section class="plans-section">
   <h2>Elige tu Frecuencia</h2>
   <div class="plans-grid">
-    <div class="plan-card" data-plan="semanal" data-price="65000" onclick="selectPlan(this)">
-      <div class="freq">Semanal</div>
-      <div class="price">$65.000</div>
-      <div class="price-unit">COP / entrega</div>
-      <div class="details">4 bouquets al mes<br>Máxima frescura</div>
-    </div>
     <div class="plan-card popular" data-plan="quincenal" data-price="65000" onclick="selectPlan(this)">
       <div class="freq">Quincenal</div>
       <div class="price">$65.000</div>
       <div class="price-unit">COP / entrega</div>
-      <div class="details">2 bouquets al mes<br>Balance perfecto</div>
+      <div class="details">2 bouquets al mes<br>$130.000 COP/mes</div>
     </div>
     <div class="plan-card" data-plan="mensual" data-price="65000" onclick="selectPlan(this)">
       <div class="freq">Mensual</div>
       <div class="price">$65.000</div>
       <div class="price-unit">COP / entrega</div>
-      <div class="details">1 bouquet al mes<br>Renueva tu espacio</div>
+      <div class="details">1 bouquet al mes<br>$65.000 COP/mes</div>
     </div>
   </div>
 </section>
@@ -534,7 +530,6 @@ footer {
           <label>Frecuencia *</label>
           <select name="frecuencia" id="frecuenciaSelect" required>
             <option value="">Selecciona...</option>
-            <option value="Semanal">Semanal ($260.000/mes)</option>
             <option value="Quincenal">Quincenal ($130.000/mes)</option>
             <option value="Mensual">Mensual ($65.000/mes)</option>
           </select>
@@ -554,13 +549,22 @@ footer {
 
       <input type="hidden" name="plan" id="planHidden" value="">
 
-      <button type="submit" class="submit-btn" id="submitBtn">Quiero Suscribirme</button>
+      <button type="submit" class="submit-btn" id="submitBtn">Suscribirme y Pagar</button>
+      <p style="text-align: center; margin-top: 12px; font-size: 0.75rem; color: var(--text-light);">
+        Pago seguro procesado por <strong>Mercado Pago</strong> &#8212; Tarjetas de credito, debito y mas
+      </p>
     </form>
 
     <div class="success-msg" id="successMsg">
-      <div class="check">✓</div>
-      <h3>¡Suscripción Recibida!</h3>
-      <p>Te contactaremos por WhatsApp para confirmar tu primera entrega de flores. 🌷</p>
+      <div class="check">&#10003;</div>
+      <h3 id="successTitle">Redirigiendo a pago seguro...</h3>
+      <p id="successText">En unos segundos seras redirigido a Mercado Pago para activar tu suscripcion.</p>
+    </div>
+
+    <div class="success-msg" id="paymentSuccessMsg">
+      <div class="check" style="background: #2C3E2D;">&#10003;</div>
+      <h3>Pago exitoso - Bienvenido/a</h3>
+      <p>Tu suscripcion esta activa. Te contactaremos por WhatsApp para coordinar tu primera entrega.</p>
     </div>
   </div>
 </section>
@@ -577,10 +581,18 @@ footer {
 
 <script>
 // ============================================================
-// CONFIGURACIÓN: Pega aquí tu URL de Google Apps Script
-// (Ver instrucciones paso a paso más abajo)
+// CONFIGURACION: Pega aqui tu URL de Google Apps Script
 // ============================================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCDsJn_XUx88WZ16VFRjwPKnnAJEjefSIgdXoHUAmoH81HnVbcsGGtA9WJwI19wF67/exec';
+
+// ============================================================
+// CONFIGURACION: Pega aqui los links de Mercado Pago
+// (Obtenidos al crear los planes - ver GUIA_MercadoPago.md)
+// ============================================================
+const MP_PLANS = {
+  'Quincenal': 'PEGA_INIT_POINT_QUINCENAL',
+  'Mensual': 'PEGA_INIT_POINT_MENSUAL'
+};
 // ============================================================
 
 let selectedPlan = '';
@@ -591,32 +603,54 @@ function selectPlan(card) {
   selectedPlan = card.dataset.plan;
   document.getElementById('planHidden').value = selectedPlan;
 
-  const freqMap = { semanal: 'Semanal', quincenal: 'Quincenal', mensual: 'Mensual' };
+  const freqMap = { quincenal: 'Quincenal', mensual: 'Mensual' };
   document.getElementById('frecuenciaSelect').value = freqMap[selectedPlan];
 }
+
+// ===== DETECTAR RETORNO DE MERCADO PAGO =====
+window.addEventListener('DOMContentLoaded', function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('pago') === 'exitoso') {
+    // El usuario regresa de Mercado Pago con pago exitoso
+    document.querySelector('.form-section .form-card form').style.display = 'none';
+    document.getElementById('paymentSuccessMsg').classList.add('show');
+    // Limpiar URL para que no se quede el parametro
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+});
 
 // ===== FORM SUBMIT =====
 async function handleSubmit(e) {
   e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  const form = document.getElementById('subscriptionForm');
+  var btn = document.getElementById('submitBtn');
+  var form = document.getElementById('subscriptionForm');
+  var frecuencia = form.frecuencia.value;
+
+  if (!frecuencia) {
+    showToast('Selecciona una frecuencia');
+    return;
+  }
 
   btn.disabled = true;
-  btn.textContent = 'Enviando...';
+  btn.textContent = 'Procesando...';
 
-  const data = {
+  // Precio mensual segun frecuencia
+  var precioMensual = { 'Quincenal': 130000, 'Mensual': 65000 };
+
+  var data = {
     timestamp: new Date().toLocaleString('es-CO'),
     nombre: form.nombre.value,
     telefono: form.telefono.value,
     email: form.email.value || '',
     direccion: form.direccion.value,
     barrio: form.barrio.value || '',
-    frecuencia: form.frecuencia.value,
-    precio: 65000,
+    frecuencia: frecuencia,
+    precio: precioMensual[frecuencia] || 65000,
     notas: form.notas.value || '',
-    plan: selectedPlan || form.frecuencia.value
+    plan: selectedPlan || frecuencia
   };
 
+  // Paso 1: Guardar datos en Google Sheets
   if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'PEGA_TU_URL_AQUI') {
     try {
       await fetch(APPS_SCRIPT_URL, {
@@ -625,30 +659,35 @@ async function handleSubmit(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-      showSuccess();
     } catch (err) {
-      console.error('Error:', err);
-      showToast('Error de conexión. Intenta de nuevo.');
-      btn.disabled = false;
-      btn.textContent = 'Quiero Suscribirme';
-      return;
+      console.error('Error guardando datos:', err);
     }
+  }
+
+  // Paso 2: Redirigir a Mercado Pago
+  var mpUrl = MP_PLANS[frecuencia];
+  if (mpUrl && mpUrl !== 'PEGA_INIT_POINT_QUINCENAL' && mpUrl !== 'PEGA_INIT_POINT_MENSUAL') {
+    // Mostrar mensaje de redireccion
+    form.style.display = 'none';
+    document.getElementById('successMsg').classList.add('show');
+    // Redirigir despues de 2 segundos
+    setTimeout(function() {
+      window.location.href = mpUrl;
+    }, 2000);
   } else {
-    console.warn('Apps Script URL no configurada');
-    showSuccess();
+    // Mercado Pago no configurado aun - solo guardar datos
+    form.style.display = 'none';
+    document.getElementById('successTitle').textContent = 'Suscripcion Recibida';
+    document.getElementById('successText').textContent = 'Te contactaremos por WhatsApp para confirmar tu primera entrega y coordinar el pago.';
+    document.getElementById('successMsg').classList.add('show');
   }
 }
 
-function showSuccess() {
-  document.getElementById('subscriptionForm').style.display = 'none';
-  document.getElementById('successMsg').classList.add('show');
-}
-
 function showToast(msg) {
-  const toast = document.getElementById('toast');
+  var toast = document.getElementById('toast');
   toast.textContent = msg;
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  setTimeout(function() { toast.classList.remove('show'); }, 3000);
 }
 </script>
 </body>
