@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#2C3E2D">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Flores por Suscripción</title>
+<title>Flores por Suscripci&#243;n</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -134,9 +134,9 @@ body {
 
 .plans-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  max-width: 480px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
@@ -406,11 +406,151 @@ footer {
   margin: 0;
 }
 
+/* ===== LEGAL CHECKBOXES ===== */
+.checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  line-height: 1.5;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.checkbox-group label a {
+  color: var(--primary);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.checkbox-group label a:hover {
+  color: #b04e4e;
+}
+
+.legal-separator {
+  margin: 1.2rem 0 0.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--light-sage);
+}
+
+/* ===== LEGAL MODAL ===== */
+.legal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.legal-overlay.show {
+  display: flex;
+}
+
+.legal-modal {
+  background: var(--white);
+  border-radius: 16px;
+  max-width: 650px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+
+.legal-modal-header {
+  background: var(--dark);
+  padding: 1.2rem 1.5rem;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.legal-modal-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--cream);
+  margin: 0;
+}
+
+.legal-modal-close {
+  background: none;
+  border: none;
+  color: var(--sage);
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 0 0.3rem;
+  line-height: 1;
+}
+
+.legal-modal-close:hover {
+  color: var(--cream);
+}
+
+.legal-modal-body {
+  padding: 1.5rem 2rem 2rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.legal-modal-body h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 1.4rem 0 0.5rem;
+}
+
+.legal-modal-body h3:first-child {
+  margin-top: 0;
+}
+
+.legal-modal-body p {
+  margin-bottom: 0.6rem;
+}
+
+.legal-modal-body ul {
+  margin: 0.4rem 0 0.8rem 1.2rem;
+  padding: 0;
+}
+
+.legal-modal-body ul li {
+  margin-bottom: 0.3rem;
+}
+
+.legal-modal-body .legal-date {
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   .hero h1 { font-size: 1.7rem; }
   .features { grid-template-columns: 1fr; gap: 0.8rem; padding: 1.5rem 1rem; }
   .plans-grid { grid-template-columns: 1fr; gap: 0.8rem; max-width: 100%; }
+  .plans-grid-3col { grid-template-columns: 1fr; }
   .plans-section, .form-section { padding: 1.5rem 1rem; }
   .form-row { grid-template-columns: 1fr; gap: 0.8rem; }
   .plan-card { display: flex; align-items: center; gap: 1rem; text-align: left; padding: 1rem 1.2rem; }
@@ -449,7 +589,7 @@ footer {
 
 <!-- PLANS -->
 <section class="plans-section">
-  <h2>Elige tu Frecuencia</h2>
+  <h2>Elige tu Plan</h2>
   <div class="plans-grid">
     <div class="plan-card popular" data-plan="quincenal" data-price="65000" onclick="selectPlan(this)">
       <div class="freq">Quincenal</div>
@@ -462,6 +602,12 @@ footer {
       <div class="price">$65.000</div>
       <div class="price-unit">COP / entrega</div>
       <div class="details">1 bouquet al mes<br>$65.000 COP/mes</div>
+    </div>
+    <div class="plan-card" data-plan="unica" data-price="65000" onclick="selectPlan(this)">
+      <div class="freq">Compra Única</div>
+      <div class="price">$65.000</div>
+      <div class="price-unit">COP / pago único</div>
+      <div class="details">1 bouquet<br>Sin suscripción</div>
     </div>
   </div>
 </section>
@@ -532,6 +678,7 @@ footer {
             <option value="">Selecciona...</option>
             <option value="Quincenal">Quincenal ($130.000/mes)</option>
             <option value="Mensual">Mensual ($65.000/mes)</option>
+            <option value="Unica">Compra Única ($65.000)</option>
           </select>
         </div>
       </div>
@@ -548,6 +695,17 @@ footer {
       </div>
 
       <input type="hidden" name="plan" id="planHidden" value="">
+
+      <div class="legal-separator">
+        <div class="checkbox-group">
+          <input type="checkbox" id="checkTerms">
+          <label for="checkTerms">He leído y acepto los <a href="#" onclick="openModal('termsModal'); return false;">Términos y Condiciones</a> del servicio de suscripción.</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="checkPrivacy">
+          <label for="checkPrivacy">He leído y acepto la <a href="#" onclick="openModal('privacyModal'); return false;">Política de Protección de Datos Personales</a>.</label>
+        </div>
+      </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">Suscribirme y Pagar</button>
       <p style="text-align: center; margin-top: 12px; font-size: 0.75rem; color: var(--text-light);">
@@ -579,6 +737,135 @@ footer {
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- MODAL: TERMINOS Y CONDICIONES -->
+<div class="legal-overlay" id="termsModal" onclick="closeModalOutside(event, 'termsModal')">
+  <div class="legal-modal">
+    <div class="legal-modal-header">
+      <h2>Términos y Condiciones</h2>
+      <button class="legal-modal-close" onclick="closeModal('termsModal')">&times;</button>
+    </div>
+    <div class="legal-modal-body">
+      <h3>1. Información General</h3>
+      <p>El presente documento establece los términos y condiciones que rigen el servicio de suscripción de flores ofrecido por <strong>Manuela Soto Restrepo</strong> (persona natural), identificada con domicilio en la ciudad de Medellín, Colombia, bajo la marca comercial <strong>Flores por Suscripción</strong>.</p>
+      <p>Contacto: manuelaasoto@gmail.com | WhatsApp: 314 680 6527</p>
+
+      <h3>2. Descripción del Servicio</h3>
+      <p>Flores por Suscripción es un servicio de entrega periódica de bouquets de flores frescas de exportación (crisantemos) a domicilio en la ciudad de Medellín y su área metropolitana. Cada bouquet está compuesto por aproximadamente 30 tallos y tiene una duración estimada de 15 a 20 días.</p>
+
+      <h3>3. Planes Disponibles</h3>
+      <ul>
+        <li><strong>Plan Quincenal:</strong> 2 entregas al mes por un valor total de $130.000 COP mensuales ($65.000 COP por entrega).</li>
+        <li><strong>Plan Mensual:</strong> 1 entrega al mes por un valor de $65.000 COP mensuales.</li>
+        <li><strong>Compra Única:</strong> 1 bouquet por un pago único de $65.000 COP, sin suscripción recurrente.</li>
+      </ul>
+      <p>Los precios incluyen el bouquet y la entrega a domicilio. Flores por Suscripción se reserva el derecho de modificar los precios con un aviso previo mínimo de 30 días al suscriptor.</p>
+
+      <h3>4. Proceso de Suscripción y Pago</h3>
+      <p>Al completar el formulario de suscripción y aceptar estos términos, el usuario será redirigido a la plataforma de pagos <strong>Mercado Pago</strong> para activar el cobro recurrente. El procesamiento del pago y la gestión de los datos de tarjeta son responsabilidad exclusiva de Mercado Pago, bajo sus propios términos y estándares de seguridad (PCI DSS).</p>
+      <p>Flores por Suscripción no almacena ni tiene acceso a los datos de tarjeta de crédito o débito del suscriptor.</p>
+
+      <h3>5. Entrega</h3>
+      <p>Las entregas se realizan los días <strong>sábados</strong> en la dirección proporcionada por el suscriptor. El horario de entrega puede variar según la zona. Si no hay nadie en la dirección al momento de la entrega, se intentará dejar el bouquet en un lugar seguro o se coordinará una nueva entrega por WhatsApp.</p>
+      <p>La disponibilidad del servicio se limita a Medellín y su área metropolitana. Flores por Suscripción se reserva el derecho de no cubrir ciertas zonas por razones logísticas.</p>
+
+      <h3>6. Características del Producto</h3>
+      <p>Cada bouquet es único y diferente. Las variedades de crisantemos, colores y composición del arreglo pueden variar según la disponibilidad estacional. Las imágenes publicadas son de referencia y no representan el bouquet exacto que se entregará.</p>
+      <p>Al tratarse de un producto natural, la duración de las flores puede variar según las condiciones ambientales y el cuidado del suscriptor.</p>
+
+      <h3>7. Cancelación</h3>
+      <p>El suscriptor puede cancelar su suscripción <strong>en cualquier momento y sin penalidad</strong>. Para cancelar, debe comunicarse por correo electrónico a manuelaasoto@gmail.com o por WhatsApp al 314 680 6527. La cancelación se hará efectiva para el siguiente ciclo de facturación. No se realizan reembolsos por períodos parciales ya cobrados.</p>
+
+      <h3>8. Derecho de Retracto</h3>
+      <p>De acuerdo con la Ley 1480 de 2011 (Estatuto del Consumidor de Colombia), el suscriptor tiene derecho a retractarse de la compra dentro de los cinco (5) días hábiles siguientes a la primera entrega del producto, siempre que este no haya sido utilizado.</p>
+
+      <h3>9. Responsabilidad</h3>
+      <p>Flores por Suscripción no se hace responsable por demoras o imposibilidades de entrega causadas por fuerza mayor, condiciones climáticas extremas, problemas de orden público, o información incorrecta proporcionada por el suscriptor.</p>
+
+      <h3>10. Modificaciones</h3>
+      <p>Flores por Suscripción se reserva el derecho de modificar estos términos y condiciones. Los cambios serán notificados al suscriptor por correo electrónico o WhatsApp con un mínimo de 15 días de anticipación. El uso continuado del servicio después de la notificación constituye la aceptación de los nuevos términos.</p>
+
+      <h3>11. Legislación Aplicable</h3>
+      <p>Estos términos se rigen por las leyes de la República de Colombia. Para cualquier controversia derivada de este servicio, las partes se someten a la jurisdicción de los tribunales de la ciudad de Medellín.</p>
+
+      <p class="legal-date">Última actualización: Febrero 2026</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: POLITICA DE PROTECCION DE DATOS -->
+<div class="legal-overlay" id="privacyModal" onclick="closeModalOutside(event, 'privacyModal')">
+  <div class="legal-modal">
+    <div class="legal-modal-header">
+      <h2>Política de Protección de Datos</h2>
+      <button class="legal-modal-close" onclick="closeModal('privacyModal')">&times;</button>
+    </div>
+    <div class="legal-modal-body">
+      <h3>1. Responsable del Tratamiento</h3>
+      <p><strong>Manuela Soto Restrepo</strong> (persona natural), con domicilio en Medellín, Colombia, actuando bajo la marca comercial <strong>Flores por Suscripción</strong>, es la responsable del tratamiento de los datos personales recolectados a través de este sitio web.</p>
+      <p>Contacto para ejercer derechos sobre datos personales: manuelaasoto@gmail.com | WhatsApp: 314 680 6527</p>
+
+      <h3>2. Marco Legal</h3>
+      <p>Esta política se rige por la <strong>Ley 1581 de 2012</strong> (Ley de Protección de Datos Personales de Colombia) y su Decreto Reglamentario 1377 de 2013, así como las demás normas concordantes vigentes en la República de Colombia.</p>
+
+      <h3>3. Datos que Recolectamos</h3>
+      <p>Al suscribirse al servicio, recolectamos los siguientes datos personales:</p>
+      <ul>
+        <li>Nombre completo</li>
+        <li>Número de teléfono / WhatsApp</li>
+        <li>Correo electrónico (opcional)</li>
+        <li>Dirección de entrega</li>
+        <li>Barrio o zona</li>
+        <li>Preferencias o notas adicionales sobre el servicio</li>
+      </ul>
+      <p><strong>No recolectamos</strong> datos financieros, números de tarjeta de crédito, ni datos sensibles. El procesamiento de pagos es realizado exclusivamente por Mercado Pago bajo su propia política de privacidad y estándares PCI DSS.</p>
+
+      <h3>4. Finalidad del Tratamiento</h3>
+      <p>Los datos personales recolectados serán utilizados para las siguientes finalidades:</p>
+      <ul>
+        <li>Gestionar y procesar la suscripción del servicio de flores</li>
+        <li>Coordinar las entregas a domicilio</li>
+        <li>Comunicarnos con el suscriptor por WhatsApp o correo electrónico respecto a su suscripción</li>
+        <li>Enviar confirmaciones y notificaciones relacionadas con el servicio</li>
+        <li>Atender solicitudes, quejas o reclamos</li>
+      </ul>
+      <p>Los datos <strong>no serán utilizados</strong> para fines publicitarios de terceros, ni serán compartidos, vendidos o transferidos a terceros no relacionados con la prestación del servicio, salvo obligación legal.</p>
+
+      <h3>5. Almacenamiento de los Datos</h3>
+      <p>Los datos personales se almacenan en Google Sheets (servicio de Google LLC), una plataforma que cuenta con medidas de seguridad técnicas y organizativas para la protección de la información. El acceso a estos datos está restringido exclusivamente a Manuela Soto Restrepo y las personas autorizadas para la operación del servicio.</p>
+
+      <h3>6. Derechos del Titular</h3>
+      <p>De conformidad con la Ley 1581 de 2012, como titular de los datos personales usted tiene derecho a:</p>
+      <ul>
+        <li><strong>Conocer:</strong> Acceder a sus datos personales que hayan sido objeto de tratamiento.</li>
+        <li><strong>Actualizar:</strong> Solicitar la actualización de sus datos personales.</li>
+        <li><strong>Rectificar:</strong> Solicitar la corrección de datos que sean inexactos o incompletos.</li>
+        <li><strong>Suprimir:</strong> Solicitar la eliminación de sus datos personales cuando no sean necesarios para la finalidad del tratamiento.</li>
+        <li><strong>Revocar:</strong> Revocar la autorización otorgada para el tratamiento de sus datos personales.</li>
+        <li><strong>Presentar quejas:</strong> Presentar quejas ante la Superintendencia de Industria y Comercio (SIC) por infracciones a la ley de protección de datos.</li>
+      </ul>
+
+      <h3>7. Procedimiento para Ejercer sus Derechos</h3>
+      <p>Para ejercer cualquiera de los derechos mencionados, el titular podrá enviar su solicitud a:</p>
+      <ul>
+        <li>Correo electrónico: manuelaasoto@gmail.com</li>
+        <li>WhatsApp: 314 680 6527</li>
+      </ul>
+      <p>La solicitud será atendida en un plazo máximo de diez (10) días hábiles contados a partir de la fecha de recepción. Si no fuera posible atenderla dentro de dicho plazo, se informará al titular antes del vencimiento de los 10 días, indicando los motivos de la demora y la fecha en que se resolverá, la cual no podrá superar cinco (5) días hábiles adicionales.</p>
+
+      <h3>8. Seguridad de la Información</h3>
+      <p>Flores por Suscripción implementa las medidas técnicas y organizativas razonables para proteger los datos personales contra acceso no autorizado, pérdida, alteración o destrucción. Esto incluye el uso de plataformas con cifrado y acceso restringido por contraseña.</p>
+
+      <h3>9. Vigencia</h3>
+      <p>Los datos personales serán conservados durante el tiempo que dure la relación de suscripción y hasta seis (6) meses después de la cancelación del servicio, salvo que exista una obligación legal que requiera un período de conservación mayor.</p>
+
+      <h3>10. Modificaciones a esta Política</h3>
+      <p>Flores por Suscripción se reserva el derecho de modificar esta política de protección de datos. Los cambios serán publicados en este sitio web y notificados al suscriptor por correo electrónico o WhatsApp.</p>
+
+      <p class="legal-date">Última actualización: Febrero 2026</p>
+    </div>
+  </div>
+</div>
+
 <script>
 // ============================================================
 // CONFIGURACION: Pega aqui tu URL de Google Apps Script
@@ -591,7 +878,8 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCDsJn_XUx88WZ
 // ============================================================
 const MP_PLANS = {
   'Quincenal': 'https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=05a4d3cab7d4424d9ecaf5ac246691d0',
-  'Mensual': 'https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=96f6fd0769d446bab32c0b8f760ca4d1'
+  'Mensual': 'https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=96f6fd0769d446bab32c0b8f760ca4d1',
+  'Unica': 'https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=1469026647-7a2f92de-c564-4b08-b16a-d9c2d407a737'
 };
 // ============================================================
 
@@ -603,8 +891,16 @@ function selectPlan(card) {
   selectedPlan = card.dataset.plan;
   document.getElementById('planHidden').value = selectedPlan;
 
-  const freqMap = { quincenal: 'Quincenal', mensual: 'Mensual' };
+  const freqMap = { quincenal: 'Quincenal', mensual: 'Mensual', unica: 'Unica' };
   document.getElementById('frecuenciaSelect').value = freqMap[selectedPlan];
+
+  // Actualizar texto del boton segun tipo de plan
+  var btn = document.getElementById('submitBtn');
+  if (selectedPlan === 'unica') {
+    btn.textContent = 'Comprar y Pagar';
+  } else {
+    btn.textContent = 'Suscribirme y Pagar';
+  }
 }
 
 // ===== DETECTAR RETORNO DE MERCADO PAGO =====
@@ -631,11 +927,21 @@ async function handleSubmit(e) {
     return;
   }
 
+  if (!document.getElementById('checkTerms').checked) {
+    showToast('Debes aceptar los Términos y Condiciones');
+    return;
+  }
+
+  if (!document.getElementById('checkPrivacy').checked) {
+    showToast('Debes aceptar la Política de Protección de Datos');
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = 'Procesando...';
 
-  // Precio mensual segun frecuencia
-  var precioMensual = { 'Quincenal': 130000, 'Mensual': 65000 };
+  // Precio segun frecuencia
+  var precioMensual = { 'Quincenal': 130000, 'Mensual': 65000, 'Unica': 65000 };
 
   var data = {
     timestamp: new Date().toLocaleString('es-CO'),
@@ -666,9 +972,16 @@ async function handleSubmit(e) {
 
   // Paso 2: Redirigir a Mercado Pago
   var mpUrl = MP_PLANS[frecuencia];
-  if (mpUrl && mpUrl !== 'PEGA_INIT_POINT_QUINCENAL' && mpUrl !== 'PEGA_INIT_POINT_MENSUAL') {
+  var placeholders = ['PEGA_INIT_POINT_QUINCENAL', 'PEGA_INIT_POINT_MENSUAL', 'PEGA_LINK_PAGO_UNICA'];
+  var mpConfigured = mpUrl && placeholders.indexOf(mpUrl) === -1;
+
+  if (mpConfigured) {
     // Mostrar mensaje de redireccion
     form.style.display = 'none';
+    if (frecuencia === 'Unica') {
+      document.getElementById('successTitle').textContent = 'Redirigiendo al pago...';
+      document.getElementById('successText').textContent = 'En unos segundos seras redirigido a Mercado Pago para completar tu compra.';
+    }
     document.getElementById('successMsg').classList.add('show');
     // Redirigir despues de 2 segundos
     setTimeout(function() {
@@ -677,7 +990,8 @@ async function handleSubmit(e) {
   } else {
     // Mercado Pago no configurado aun - solo guardar datos
     form.style.display = 'none';
-    document.getElementById('successTitle').textContent = 'Suscripcion Recibida';
+    var msgTipo = frecuencia === 'Unica' ? 'Pedido Recibido' : 'Suscripcion Recibida';
+    document.getElementById('successTitle').textContent = msgTipo;
     document.getElementById('successText').textContent = 'Te contactaremos por WhatsApp para confirmar tu primera entrega y coordinar el pago.';
     document.getElementById('successMsg').classList.add('show');
   }
@@ -689,6 +1003,33 @@ function showToast(msg) {
   toast.classList.add('show');
   setTimeout(function() { toast.classList.remove('show'); }, 3000);
 }
+
+// ===== LEGAL MODALS =====
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(event, id) {
+  if (event.target === document.getElementById(id)) {
+    closeModal(id);
+  }
+}
+
+// Cerrar modal con tecla Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.legal-overlay.show').forEach(function(modal) {
+      modal.classList.remove('show');
+    });
+    document.body.style.overflow = '';
+  }
+});
 </script>
 </body>
 </html>
